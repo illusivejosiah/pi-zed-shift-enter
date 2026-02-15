@@ -1,12 +1,13 @@
 {
-  "name": "pi-zed-shift-enter",
+  "name": "@illusivejosiah/pi-zed-shift-enter",
   "version": "1.0.0",
   "description": "Fixes Shift+Enter not creating newlines in pi when running inside Zed's terminal",
   "pi": {
     "extensions": ["extension.ts"]
   },
-  "keywords": ["pi", "zed", "terminal", "shift-enter", "newline"],
+  "keywords": ["pi-package", "pi-extension", "pi", "zed", "terminal", "shift-enter", "newline"],
   "license": "MIT",
+  "author": "Josiah Richards <josiah@illusory.ai>",
   "repository": {
     "type": "git",
     "url": "https://github.com/illusivejosiah/pi-zed-shift-enter"
