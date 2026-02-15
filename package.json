@@ -1,6 +1,6 @@
 {
-  "name": "@illusivejosiah/pi-zed-shift-enter",
-  "version": "1.0.0",
+  "name": "pi-zed-shift-enter",
+  "version": "1.0.1",
   "description": "Fixes Shift+Enter not creating newlines in pi when running inside Zed's terminal",
   "pi": {
     "extensions": ["extension.ts"]
