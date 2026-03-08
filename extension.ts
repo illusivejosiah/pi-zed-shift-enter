@@ -2,14 +2,15 @@
  * pi-zed-shift-enter
  *
  * Fixes Shift+Enter not creating newlines in pi when running inside
- * Zed's built-in terminal.
+ * Zed's built-in terminal, including through tmux.
  *
  * Root cause: Zed's terminal does not support the Kitty keyboard protocol.
  * It sends ESC+CR (\x1b\x0d) for Shift+Enter, which pi misinterprets as
  * Alt+Enter (queue follow-up message) instead of Shift+Enter (new line).
  *
- * This extension intercepts the raw bytes and converts them to bare LF (\x0a),
- * which pi's editor handles as a newline.
+ * Inside tmux with extended-keys-format csi-u, tmux re-encodes \x1b\x0d
+ * as \x1b[13;3u (Alt+Enter in CSI-u format) before pi sees it. This
+ * extension intercepts both forms.
  *
  * Upstream references:
  * - Zed Kitty protocol: https://github.com/zed-industries/zed/discussions/29756
@@ -22,8 +23,11 @@ import { CustomEditor, type ExtensionAPI } from "@mariozechner/pi-coding-agent";
 class ZedFixEditor extends CustomEditor {
   handleInput(data: string): void {
     // Zed sends \x1b\x0d (ESC+CR) for Shift+Enter.
-    // Convert to \x0a (bare LF) which the editor's hardcoded newline check handles.
-    if (data === "\x1b\r") {
+    // Without tmux: arrives as \x1b\r (raw)
+    // With tmux (extended-keys csi-u): re-encoded as \x1b[13;3u (Alt+Enter CSI-u)
+    // Both must be intercepted before CustomEditor's keybinding loop
+    // catches them as Alt+Enter (follow-up).
+    if (data === "\x1b\r" || data === "\x1b[13;3u") {
       super.handleInput("\n");
       return;
     }

@@ -22,6 +22,7 @@ Zed's terminal does not support the [Kitty keyboard protocol](https://sw.kovidgo
 |-----|-------------------|-----------------|
 | Enter | `\x0d` (CR) | Enter — submit |
 | Shift+Enter | `\x1b\x0d` (ESC+CR) | Alt+Enter — follow-up (wrong) |
+| Shift+Enter (tmux) | `\x1b[13;3u` (CSI-u Alt+Enter) | Alt+Enter — follow-up (wrong) |
 | Ctrl+J | `\x0a` (LF) | Newline (correct) |
 
 Without Kitty protocol, pi treats the ESC prefix as an Alt modifier, so `ESC+CR` becomes Alt+Enter instead of Shift+Enter.
